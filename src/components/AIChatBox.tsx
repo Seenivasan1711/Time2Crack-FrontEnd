@@ -13,12 +13,12 @@ const AIChatBox = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
-      text: "Hi! I'm your AI shopping assistant. I can help you with:",
+      text: "Hi! I'm your Time2Crack shopping assistant. I can help you with:",
       isUser: false,
       timestamp: new Date(),
     },
     {
-      text: "• Product recommendations\n• Shopping advice\n• Order planning\n• Budget optimization",
+      text: "• Cracker recommendations\n• Sweet & dessert suggestions\n• Order planning\n• Celebration advice",
       isUser: false,
       timestamp: new Date(),
     },
@@ -42,10 +42,10 @@ const AIChatBox = () => {
     await new Promise(resolve => setTimeout(resolve, 1000));
     
     const responses = [
-      "Based on your interests, I recommend checking out our latest electronics collection.",
-      "I can help you create a shopping plan that fits your budget. What's your target spending range?",
-      "Would you like me to analyze your past orders and suggest similar products you might enjoy?",
-      "I noticed you're interested in tech products. We have some great deals on laptops and smartphones right now.",
+      "Based on your celebration needs, I recommend checking out our premium cracker collection.",
+      "I can help you create a shopping plan for your celebration. What's your budget range?",
+      "Would you like me to suggest the perfect combination of crackers and sweets for your event?",
+      "I noticed you're planning a celebration. We have some amazing deals on fireworks and sweets right now.",
     ];
     
     const response = responses[Math.floor(Math.random() * responses.length)];
@@ -76,7 +76,7 @@ const AIChatBox = () => {
             <div className="p-4 bg-primary-600 dark:bg-primary-800 text-white flex justify-between items-center">
               <div className="flex items-center space-x-2">
                 <Bot className="h-5 w-5" />
-                <h3 className="font-medium">Time2Crack AI Assistant</h3>
+                <h3 className="font-medium">Time2Crack Assistant</h3>
               </div>
               <button
                 onClick={() => setIsOpen(false)}

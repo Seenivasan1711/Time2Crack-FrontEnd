@@ -4,15 +4,15 @@ import { ShoppingBag, Facebook, Twitter, Instagram } from 'lucide-react';
 const Footer = () => {
   return (
     <footer className="bg-white border-t border-gray-200">
-      <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-4">
             <Link to="/" className="flex items-center">
               <ShoppingBag className="h-8 w-8 text-primary-600" />
-              <span className="ml-2 text-xl font-bold text-gray-900">AI Shop</span>
+              <span className="ml-2 text-xl font-bold text-gray-900">Time2Crack</span>
             </Link>
             <p className="text-gray-500 text-sm">
-              AI-powered shopping experience with personalized recommendations and smart assistance.
+              Premium crackers, sweets, and desserts for all your celebrations. Quality products for every occasion.
             </p>
             <div className="flex space-x-4">
               <a href="#" className="text-gray-400 hover:text-gray-500">
@@ -109,9 +109,9 @@ const Footer = () => {
           </div>
         </div>
         
-        <div className="mt-12 border-t border-gray-200 pt-8">
+        <div className="mt-8 border-t border-gray-200 pt-8">
           <p className="text-base text-gray-400 text-center">
-            &copy; {new Date().getFullYear()} AI Shop. All rights reserved.
+            &copy; {new Date().getFullYear()} Time2Crack. All rights reserved.
           </p>
         </div>
       </div>

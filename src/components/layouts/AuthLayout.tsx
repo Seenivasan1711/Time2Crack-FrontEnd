@@ -9,8 +9,11 @@ const AuthLayout = () => {
           <ShoppingBag className="h-12 w-12 text-primary-600" />
         </div>
         <h2 className="mt-2 text-center text-3xl font-extrabold text-gray-900">
-          AI-Assisted E-Commerce
+          Time2Crack
         </h2>
+        <p className="mt-2 text-center text-sm text-gray-600">
+          Premium Crackers & Sweets
+        </p>
       </div>
       
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">

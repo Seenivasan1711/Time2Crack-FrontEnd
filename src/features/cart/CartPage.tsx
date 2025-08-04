@@ -20,11 +20,11 @@ const CartPage = () => {
   const shipping = subtotal > 100 ? 0 : 10; // Free shipping over $100
   const total = subtotal - discount + shipping;
   
-  const handleRemoveItem = (id: string) => {
+  const handleRemoveItem = (id: number) => {
     dispatch(removeFromCart(id));
   };
   
-  const handleUpdateQuantity = (id: string, quantity: number) => {
+  const handleUpdateQuantity = (id: number, quantity: number) => {
     dispatch(updateQuantity({ id, quantity }));
   };
   

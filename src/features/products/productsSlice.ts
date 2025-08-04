@@ -13,38 +13,11 @@ interface ProductsState {
     category: string;
     minPrice: number;
     maxPrice: number;
+    stock: string;
   };
 }
 
-// Mock data for products (fallback if API fails)
-const mockProducts: Product[] = [
-  {
-    id: 1,
-    name: 'Wireless Noise-Cancelling Headphones',
-    description: 'Premium wireless headphones with active noise cancellation',
-    price: 299.99,
-    stock: 15,
-    categoryId: 1,
-    slug: 'wireless-noise-cancelling-headphones',
-    imageUrl: 'https://images.pexels.com/photos/3394650/pexels-photo-3394650.jpeg',
-    isActive: true,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-  {
-    id: 2,
-    name: 'Smart Fitness Watch',
-    description: 'Track your fitness goals with heart rate monitoring',
-    price: 199.99,
-    stock: 20,
-    categoryId: 1,
-    slug: 'smart-fitness-watch',
-    imageUrl: 'https://images.pexels.com/photos/437037/pexels-photo-437037.jpeg',
-    isActive: true,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  },
-];
+// No mock data - all products will be fetched from API
 
 // Fetch all products
 export const fetchProducts = createAsyncThunk('products/fetchProducts', async (_, { rejectWithValue }) => {
@@ -80,6 +53,7 @@ const initialState: ProductsState = {
     category: '',
     minPrice: 0,
     maxPrice: 1000,
+    stock: '',
   },
 };
 
@@ -157,9 +131,10 @@ const filterProducts = (
         product.description.toLowerCase().includes(searchTerm.toLowerCase())
       : true;
     
-    // Filter by category (using categoryId for now)
+    // Filter by category
+    const productCategory = product.category?.name || `Category ${product.categoryId}`;
     const matchesCategory = filters.category
-      ? product.categoryId.toString() === filters.category
+      ? productCategory === filters.category
       : true;
     
     // Filter by price range
@@ -167,7 +142,13 @@ const filterProducts = (
     const matchesPrice =
       productPrice >= filters.minPrice && productPrice <= filters.maxPrice;
     
-    return matchesSearch && matchesCategory && matchesPrice;
+    // Filter by stock status
+    const matchesStock = filters.stock
+      ? (filters.stock === 'in-stock' && product.stock > 0) ||
+        (filters.stock === 'out-of-stock' && product.stock === 0)
+      : true;
+    
+    return matchesSearch && matchesCategory && matchesPrice && matchesStock;
   });
 };
 

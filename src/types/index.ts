@@ -5,6 +5,7 @@ export interface Product {
   price: number | string; // Can be string from backend, number in frontend
   stock: number;
   categoryId: number;
+  category?: Category; // Optional category object from API
   slug: string;
   imageUrl: string;
   isActive: boolean;

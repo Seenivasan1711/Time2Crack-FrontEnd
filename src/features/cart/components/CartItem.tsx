@@ -4,8 +4,8 @@ import { Link } from 'react-router-dom';
 
 interface CartItemProps {
   item: CartItemType;
-  onRemove: (id: string) => void;
-  onUpdateQuantity: (id: string, quantity: number) => void;
+  onRemove: (id: number) => void;
+  onUpdateQuantity: (id: number, quantity: number) => void;
 }
 
 const CartItem = ({ item, onRemove, onUpdateQuantity }: CartItemProps) => {
@@ -19,7 +19,7 @@ const CartItem = ({ item, onRemove, onUpdateQuantity }: CartItemProps) => {
     <li className="p-6 flex flex-col sm:flex-row">
       <div className="flex-shrink-0 w-full sm:w-24 h-24 mb-4 sm:mb-0">
         <img
-          src={item.image}
+          src={item.imageUrl || 'https://via.placeholder.com/300x200?text=No+Image'}
           alt={item.name}
           className="w-full h-full object-cover object-center rounded-md"
         />
@@ -31,7 +31,7 @@ const CartItem = ({ item, onRemove, onUpdateQuantity }: CartItemProps) => {
             <Link to={`/products/${item.id}`} className="text-lg font-medium text-gray-900 hover:text-primary-600">
               {item.name}
             </Link>
-            <p className="mt-1 text-sm text-gray-500">{item.category}</p>
+            <p className="mt-1 text-sm text-gray-500">{item.category?.name || `Category ${item.categoryId}`}</p>
           </div>
                         <p className="text-lg font-medium text-gray-900">${Number(item.price).toFixed(2)}</p>
         </div>

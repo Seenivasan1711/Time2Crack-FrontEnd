@@ -15,6 +15,7 @@ import CartPage from './features/cart/CartPage';
 import OrdersPage from './features/orders/OrdersPage';
 import DeliveryPage from './features/orders/DeliveryPage';
 import NotFoundPage from './components/NotFoundPage';
+import DebugProducts from './components/DebugProducts';
 
 // Components
 import AuthRoute from './features/auth/AuthRoute';
@@ -44,6 +45,7 @@ function App() {
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/products/:id" element={<ProductDetailPage />} />
         <Route path="/cart" element={<CartPage />} />
+        <Route path="/debug" element={<DebugProducts />} />
         
         <Route element={<AuthRoute />}>
           <Route path="/orders" element={<OrdersPage />} />

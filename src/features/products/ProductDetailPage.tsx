@@ -4,7 +4,7 @@ import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useAppSelector } from '../../hooks/useAppSelector';
 import { fetchProductById } from './productsSlice';
 import { addToCart } from '../cart/cartSlice';
-import { Star, ShoppingCart, ArrowLeft } from 'lucide-react';
+import { ShoppingCart, ArrowLeft } from 'lucide-react';
 
 const ProductDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -75,32 +75,21 @@ const ProductDetailPage = () => {
           <div className="md:flex-shrink-0 md:w-1/2">
             <img
               className="h-full w-full object-cover md:h-full md:w-full"
-              src={selectedProduct.image}
+              src={selectedProduct.imageUrl || 'https://via.placeholder.com/300x200?text=No+Image'}
               alt={selectedProduct.name}
             />
           </div>
           
           <div className="p-8 md:w-1/2">
             <div className="uppercase tracking-wide text-sm text-primary-600 font-semibold">
-              {selectedProduct.category}
+              {selectedProduct.category?.name || `Category ${selectedProduct.categoryId}`}
             </div>
             <h1 className="mt-2 text-3xl font-bold text-gray-900">{selectedProduct.name}</h1>
             
-            <div className="mt-4 flex items-center">
-              <div className="flex items-center">
-                {[...Array(5)].map((_, i) => (
-                  <Star
-                    key={i}
-                    className={`h-5 w-5 ${
-                      i < Math.floor(selectedProduct.rating)
-                        ? 'text-yellow-400'
-                        : 'text-gray-300'
-                    }`}
-                    fill="currentColor"
-                  />
-                ))}
-              </div>
-              <span className="ml-2 text-gray-600">{selectedProduct.rating} out of 5</span>
+            <div className="mt-4">
+              <span className="text-sm text-gray-600">
+                Product ID: {selectedProduct.id}
+              </span>
             </div>
             
             <div className="mt-6 text-2xl font-bold text-gray-900">${Number(selectedProduct.price).toFixed(2)}</div>
