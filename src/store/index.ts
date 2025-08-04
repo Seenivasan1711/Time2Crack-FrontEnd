@@ -1,15 +1,18 @@
 import { configureStore } from '@reduxjs/toolkit';
-import authReducer from '../features/auth/authSlice';
-import cartReducer from '../features/cart/cartSlice';
-import productsReducer from '../features/products/productsSlice';
-import ordersReducer from '../features/orders/ordersSlice';
 
-export const store = configureStore({
+// Import reducers
+import authSlice from '../features/auth/authSlice';
+import cartSlice from '../features/cart/cartSlice';
+import productsSlice from '../features/products/productsSlice';
+import ordersSlice from '../features/orders/ordersSlice';
+
+// Create store
+const store = configureStore({
   reducer: {
-    auth: authReducer,
-    cart: cartReducer,
-    products: productsReducer,
-    orders: ordersReducer,
+    auth: authSlice,
+    cart: cartSlice,
+    products: productsSlice,
+    orders: ordersSlice,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
@@ -17,5 +20,6 @@ export const store = configureStore({
     }),
 });
 
+export { store };
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

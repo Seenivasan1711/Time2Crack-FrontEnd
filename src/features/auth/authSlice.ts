@@ -1,12 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { jwtDecode } from 'jwt-decode';
 import axiosClient from '../../services/axiosClient';
-
-interface User {
-  id: string;
-  email: string;
-  name: string;
-}
+import { User } from '../../types';
 
 interface AuthState {
   user: User | null;
@@ -33,17 +27,9 @@ export const checkAuth = createAsyncThunk('auth/checkAuth', async (_, { dispatch
   }
   
   try {
-    // Decode token to get user info
-    const decoded = jwtDecode<User & { exp: number }>(token);
-    
-    // Check if token is expired
-    const currentTime = Date.now() / 1000;
-    if (decoded.exp < currentTime) {
-      dispatch(logout());
-      return null;
-    }
-    
-    return { user: { id: decoded.id, email: decoded.email, name: decoded.name }, token };
+    // Verify token with backend
+    const response = await axiosClient.get('/auth/profile');
+    return { user: response.data, token };
   } catch (error) {
     dispatch(logout());
     return null;
@@ -55,19 +41,7 @@ export const login = createAsyncThunk(
   'auth/login',
   async (credentials: { email: string; password: string }, { rejectWithValue }) => {
     try {
-      // In a real app, this would be an API call
-      // For demo purposes, we'll simulate a successful login with mock data
-      const response = {
-        data: {
-          token: 'mock-jwt-token',
-          user: {
-            id: '1',
-            email: credentials.email,
-            name: 'Demo User',
-          },
-        },
-      };
-      
+      const response = await axiosClient.post('/auth/login', credentials);
       localStorage.setItem('token', response.data.token);
       return response.data;
     } catch (error: any) {
@@ -79,21 +53,9 @@ export const login = createAsyncThunk(
 // Register user
 export const register = createAsyncThunk(
   'auth/register',
-  async (userData: { name: string; email: string; password: string }, { rejectWithValue }) => {
+  async (userData: { firstName: string; lastName: string; email: string; password: string }, { rejectWithValue }) => {
     try {
-      // In a real app, this would be an API call
-      // For demo purposes, we'll simulate a successful registration with mock data
-      const response = {
-        data: {
-          token: 'mock-jwt-token',
-          user: {
-            id: '1',
-            email: userData.email,
-            name: userData.name,
-          },
-        },
-      };
-      
+      const response = await axiosClient.post('/auth/register', userData);
       localStorage.setItem('token', response.data.token);
       return response.data;
     } catch (error: any) {

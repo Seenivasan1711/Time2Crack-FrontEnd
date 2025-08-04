@@ -1,16 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axiosClient from '../../services/axiosClient';
-
-export interface Product {
-  id: string;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-  category: string;
-  rating: number;
-  stock: number;
-}
+import { Product } from '../../types';
 
 interface ProductsState {
   items: Product[];
@@ -26,76 +16,41 @@ interface ProductsState {
   };
 }
 
-// Mock data for products
+// Mock data for products (fallback if API fails)
 const mockProducts: Product[] = [
   {
-    id: '1',
+    id: 1,
     name: 'Wireless Noise-Cancelling Headphones',
-    description: 'Premium wireless headphones with active noise cancellation for an immersive audio experience.',
+    description: 'Premium wireless headphones with active noise cancellation',
     price: 299.99,
-    image: 'https://images.pexels.com/photos/3394650/pexels-photo-3394650.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    category: 'Electronics',
-    rating: 4.8,
     stock: 15,
+    categoryId: 1,
+    slug: 'wireless-noise-cancelling-headphones',
+    imageUrl: 'https://images.pexels.com/photos/3394650/pexels-photo-3394650.jpeg',
+    isActive: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   },
   {
-    id: '2',
+    id: 2,
     name: 'Smart Fitness Watch',
-    description: 'Track your fitness goals with this advanced smartwatch featuring heart rate monitoring and GPS.',
+    description: 'Track your fitness goals with heart rate monitoring',
     price: 199.99,
-    image: 'https://images.pexels.com/photos/437037/pexels-photo-437037.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    category: 'Electronics',
-    rating: 4.5,
     stock: 20,
-  },
-  {
-    id: '3',
-    name: 'Ergonomic Office Chair',
-    description: 'Comfortable office chair with lumbar support and adjustable height for better posture.',
-    price: 249.99,
-    image: 'https://images.pexels.com/photos/1957478/pexels-photo-1957478.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    category: 'Furniture',
-    rating: 4.3,
-    stock: 8,
-  },
-  {
-    id: '4',
-    name: 'Organic Cotton T-Shirt',
-    description: 'Soft and breathable t-shirt made from 100% organic cotton.',
-    price: 29.99,
-    image: 'https://images.pexels.com/photos/5698851/pexels-photo-5698851.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    category: 'Clothing',
-    rating: 4.2,
-    stock: 50,
-  },
-  {
-    id: '5',
-    name: 'Professional Blender',
-    description: 'High-powered blender for smoothies, soups, and more with multiple speed settings.',
-    price: 129.99,
-    image: 'https://images.pexels.com/photos/3735218/pexels-photo-3735218.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    category: 'Kitchen',
-    rating: 4.7,
-    stock: 12,
-  },
-  {
-    id: '6',
-    name: 'Leather Wallet',
-    description: 'Genuine leather wallet with multiple card slots and RFID protection.',
-    price: 49.99,
-    image: 'https://images.pexels.com/photos/2079438/pexels-photo-2079438.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-    category: 'Accessories',
-    rating: 4.4,
-    stock: 30,
+    categoryId: 1,
+    slug: 'smart-fitness-watch',
+    imageUrl: 'https://images.pexels.com/photos/437037/pexels-photo-437037.jpeg',
+    isActive: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
   },
 ];
 
 // Fetch all products
 export const fetchProducts = createAsyncThunk('products/fetchProducts', async (_, { rejectWithValue }) => {
   try {
-    // In a real app, this would be an API call
-    // For demo purposes, we'll use mock data
-    return mockProducts;
+    const response = await axiosClient.get('/products');
+    return response.data;
   } catch (error: any) {
     return rejectWithValue(error.response?.data?.message || 'Failed to fetch products');
   }
@@ -106,15 +61,8 @@ export const fetchProductById = createAsyncThunk(
   'products/fetchProductById',
   async (id: string, { rejectWithValue }) => {
     try {
-      // In a real app, this would be an API call
-      // For demo purposes, we'll use mock data
-      const product = mockProducts.find((p) => p.id === id);
-      
-      if (!product) {
-        throw new Error('Product not found');
-      }
-      
-      return product;
+      const response = await axiosClient.get(`/products/${id}`);
+      return response.data;
     } catch (error: any) {
       return rejectWithValue(error.message || 'Failed to fetch product');
     }
@@ -162,8 +110,13 @@ const productsSlice = createSlice({
       })
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.items = action.payload;
-        state.filteredItems = action.payload;
+        // Convert price strings to numbers
+        const productsWithNumberPrices = action.payload.map((product: Product) => ({
+          ...product,
+          price: typeof product.price === 'string' ? parseFloat(product.price) : product.price,
+        }));
+        state.items = productsWithNumberPrices;
+        state.filteredItems = productsWithNumberPrices;
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.isLoading = false;
@@ -177,7 +130,12 @@ const productsSlice = createSlice({
       })
       .addCase(fetchProductById.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.selectedProduct = action.payload;
+        // Convert price string to number
+        const product = {
+          ...action.payload,
+          price: typeof action.payload.price === 'string' ? parseFloat(action.payload.price) : action.payload.price,
+        };
+        state.selectedProduct = product;
       })
       .addCase(fetchProductById.rejected, (state, action) => {
         state.isLoading = false;
@@ -199,14 +157,15 @@ const filterProducts = (
         product.description.toLowerCase().includes(searchTerm.toLowerCase())
       : true;
     
-    // Filter by category
+    // Filter by category (using categoryId for now)
     const matchesCategory = filters.category
-      ? product.category === filters.category
+      ? product.categoryId.toString() === filters.category
       : true;
     
     // Filter by price range
+    const productPrice = typeof product.price === 'string' ? parseFloat(product.price) : product.price;
     const matchesPrice =
-      product.price >= filters.minPrice && product.price <= filters.maxPrice;
+      productPrice >= filters.minPrice && productPrice <= filters.maxPrice;
     
     return matchesSearch && matchesCategory && matchesPrice;
   });

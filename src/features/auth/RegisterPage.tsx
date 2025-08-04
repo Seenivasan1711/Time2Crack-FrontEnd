@@ -11,7 +11,8 @@ import { Mail, Lock, User, UserPlus } from 'lucide-react';
 
 // Form validation schema
 const registerSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters'),
+  firstName: z.string().min(2, 'First name must be at least 2 characters'),
+  lastName: z.string().min(2, 'Last name must be at least 2 characters'),
   email: z.string().email('Please enter a valid email'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
   confirmPassword: z.string().min(6, 'Password must be at least 6 characters'),
@@ -35,7 +36,8 @@ const RegisterPage = () => {
   } = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      name: '',
+      firstName: '',
+      lastName: '',
       email: '',
       password: '',
       confirmPassword: '',
@@ -83,10 +85,18 @@ const RegisterPage = () => {
       <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
         <div className="rounded-md shadow-sm space-y-4">
           <FormInput
-            label="Full name"
+            label="First name"
             type="text"
-            {...register('name')}
-            error={errors.name?.message}
+            {...register('firstName')}
+            error={errors.firstName?.message}
+            icon={<User className="h-5 w-5 text-gray-400" />}
+          />
+          
+          <FormInput
+            label="Last name"
+            type="text"
+            {...register('lastName')}
+            error={errors.lastName?.message}
             icon={<User className="h-5 w-5 text-gray-400" />}
           />
           

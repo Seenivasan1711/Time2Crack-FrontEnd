@@ -126,7 +126,7 @@ const OrdersPage = () => {
                             <p className="mt-1 text-sm text-gray-500">Qty: {item.quantity}</p>
                           </div>
                           <p className="text-sm font-medium text-gray-900">
-                            ${(item.price * item.quantity).toFixed(2)}
+                            ${(Number(item.price) * item.quantity).toFixed(2)}
                           </p>
                         </div>
                       </div>

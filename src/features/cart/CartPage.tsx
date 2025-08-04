@@ -15,7 +15,7 @@ const CartPage = () => {
   const [couponApplied, setCouponApplied] = useState(false);
   
   // Calculate cart totals
-  const subtotal = items.reduce((total, item) => total + item.price * item.quantity, 0);
+  const subtotal = items.reduce((total, item) => total + Number(item.price) * item.quantity, 0);
   const discount = couponApplied ? subtotal * 0.1 : 0; // 10% discount if coupon applied
   const shipping = subtotal > 100 ? 0 : 10; // Free shipping over $100
   const total = subtotal - discount + shipping;

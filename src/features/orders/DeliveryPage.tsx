@@ -35,7 +35,7 @@ const DeliveryPage = () => {
   const [step, setStep] = useState(1);
   
   // Calculate cart totals
-  const subtotal = items.reduce((total, item) => total + item.price * item.quantity, 0);
+  const subtotal = items.reduce((total, item) => total + Number(item.price) * item.quantity, 0);
   const shipping = 10;
   const tax = subtotal * 0.08; // 8% tax
   const total = subtotal + shipping + tax;
@@ -351,7 +351,7 @@ const DeliveryPage = () => {
                         <p className="mt-1 text-sm text-gray-500">Qty: {item.quantity}</p>
                       </div>
                       <p className="text-sm font-medium text-gray-900">
-                        ${(item.price * item.quantity).toFixed(2)}
+                        ${(Number(item.price) * item.quantity).toFixed(2)}
                       </p>
                     </div>
                   </div>

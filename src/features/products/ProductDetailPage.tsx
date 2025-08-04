@@ -103,7 +103,7 @@ const ProductDetailPage = () => {
               <span className="ml-2 text-gray-600">{selectedProduct.rating} out of 5</span>
             </div>
             
-            <div className="mt-6 text-2xl font-bold text-gray-900">${selectedProduct.price.toFixed(2)}</div>
+            <div className="mt-6 text-2xl font-bold text-gray-900">${Number(selectedProduct.price).toFixed(2)}</div>
             
             <div className="mt-4">
               <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${

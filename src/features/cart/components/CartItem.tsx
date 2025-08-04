@@ -33,7 +33,7 @@ const CartItem = ({ item, onRemove, onUpdateQuantity }: CartItemProps) => {
             </Link>
             <p className="mt-1 text-sm text-gray-500">{item.category}</p>
           </div>
-          <p className="text-lg font-medium text-gray-900">${item.price.toFixed(2)}</p>
+                        <p className="text-lg font-medium text-gray-900">${Number(item.price).toFixed(2)}</p>
         </div>
         
         <div className="mt-4 flex justify-between items-center">
@@ -65,7 +65,7 @@ const CartItem = ({ item, onRemove, onUpdateQuantity }: CartItemProps) => {
         </div>
         
         <div className="mt-2 text-sm text-gray-700">
-          Subtotal: ${(item.price * item.quantity).toFixed(2)}
+                          Subtotal: ${(Number(item.price) * item.quantity).toFixed(2)}
         </div>
       </div>
     </li>

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { CartItem } from '../cart/cartSlice';
+import { CartItem, Order as BackendOrder } from '../../types';
 import axiosClient from '../../services/axiosClient';
 
 export interface DeliveryInfo {

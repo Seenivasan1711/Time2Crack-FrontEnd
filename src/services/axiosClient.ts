@@ -1,6 +1,4 @@
 import axios from 'axios';
-import { store } from '../store';
-import { logout } from '../features/auth/authSlice';
 
 // Create axios instance with base URL
 const axiosClient = axios.create({
@@ -13,8 +11,8 @@ const axiosClient = axios.create({
 // Request interceptor to add auth token
 axiosClient.interceptors.request.use(
   (config) => {
-    const state = store.getState();
-    const token = state.auth.token;
+    // Get token from localStorage instead of store to avoid circular dependency
+    const token = localStorage.getItem('token');
     
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -31,7 +29,8 @@ axiosClient.interceptors.response.use(
   (error) => {
     // Handle 401 Unauthorized errors (token expired)
     if (error.response && error.response.status === 401) {
-      store.dispatch(logout());
+      // Remove token from localStorage instead of dispatching logout
+      localStorage.removeItem('token');
     }
     
     return Promise.reject(error);

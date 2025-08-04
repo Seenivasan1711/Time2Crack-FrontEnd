@@ -40,7 +40,7 @@ function App() {
 
       {/* Protected routes */}
       <Route element={<MainLayout />}>
-        <Route path="/" element={<Navigate to="/products\" replace />} />
+        <Route path="/" element={<Navigate to="/products" replace />} />
         <Route path="/products" element={<ProductsPage />} />
         <Route path="/products/:id" element={<ProductDetailPage />} />
         <Route path="/cart" element={<CartPage />} />

@@ -22,7 +22,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
       <Link to={`/products/${product.id}`} className="block">
         <div className="aspect-w-1 aspect-h-1 w-full overflow-hidden bg-gray-200 xl:aspect-w-7 xl:aspect-h-8">
           <img
-            src={product.image}
+            src={product.imageUrl || 'https://via.placeholder.com/300x200?text=No+Image'}
             alt={product.name}
             className="h-48 w-full object-cover object-center group-hover:opacity-75"
           />
@@ -32,12 +32,11 @@ const ProductCard = ({ product }: ProductCardProps) => {
           <div className="flex justify-between items-start">
             <div>
               <h3 className="text-sm text-gray-700">{product.name}</h3>
-              <p className="mt-1 text-lg font-medium text-gray-900">${product.price.toFixed(2)}</p>
+              <p className="mt-1 text-lg font-medium text-gray-900">${Number(product.price).toFixed(2)}</p>
             </div>
             
             <div className="flex items-center">
-              <Star className="h-4 w-4 text-yellow-400" fill="currentColor" />
-              <span className="ml-1 text-sm text-gray-600">{product.rating}</span>
+              <span className="text-sm text-gray-600">Stock: {product.stock}</span>
             </div>
           </div>
           
